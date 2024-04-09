@@ -9,7 +9,7 @@ DAY_MODE_COLORS = {
     "text": (0, 0, 0),
     "selected": (255, 0, 0),
     "cube_text": (0, 0, 0),
-    "cube_temp_text": (128, 128, 128)
+    "cube_temp_text": (50, 50, 255)
 }
 
 NIGHT_MODE_COLORS = {
@@ -18,7 +18,7 @@ NIGHT_MODE_COLORS = {
     "text": (255, 255, 255),
     "selected": (255, 0, 0),
     "cube_text": (255, 255, 255),
-    "cube_temp_text": (128, 128, 128)
+    "cube_temp_text": (100, 100, 255)
 }
 
 def toggle_night_mode(win, board, time, strikes, night_mode):
@@ -38,6 +38,11 @@ def toggle_night_mode(win, board, time, strikes, night_mode):
 
     return not night_mode # Return the new mode
 
+def display_game_over(win, colors):
+    font = pygame.font.SysFont("timesnewroman", 40)
+    game_over_text = font.render('GAME OVER', True, colors["text"])
+    win.blit(game_over_text, (win.get_width() // 2 - game_over_text.get_width() // 2, win.get_height() // 2 - game_over_text.get_height() // 2))
+    pygame.display.update()
 
 class Grid:
     board = [
@@ -300,6 +305,9 @@ def main():
                         if board.is_finished():
                             print("Game over")
                             run = False
+                            display_game_over(win, colors)
+                            time.sleep(3) # Pause for 3 seconds before closing the window
+
                 if event.key == pygame.K_n:
                     night_mode = toggle_night_mode(win, board, play_time, strikes, night_mode)
                     if night_mode:
